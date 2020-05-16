@@ -18,5 +18,18 @@ public class ConsoleRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         List<Player> players = rouletteService.loadPlayers();
+        rouletteService.displayReport(rouletteService.calculateBet(players));
+
+        try {
+            while(true){
+                Thread.sleep(30000);
+                for(int i = 0 ;i < 25;i++)
+                    System.out.println("\b");
+                rouletteService.displayReport(rouletteService.calculateBet(players));
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
