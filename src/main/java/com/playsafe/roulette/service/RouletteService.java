@@ -16,4 +16,5 @@ public interface RouletteService {
 
     List<Player> loadPlayers();
     List<PlayerReport> calculateBet(List<Player> players);
+    void displayReport(List<PlayerReport> reports);
 }

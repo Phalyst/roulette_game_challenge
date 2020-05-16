@@ -47,4 +47,10 @@ public class PlayerReport {
     public void setRouletteNum(int rouletteNum) {
         this.rouletteNum = rouletteNum;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%-15s  %-10s %-10s %-10.1f \n", playerName, bet, outcome, winnings);
+
+    }
 }

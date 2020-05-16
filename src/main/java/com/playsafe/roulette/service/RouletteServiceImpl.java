@@ -85,4 +85,14 @@ public class RouletteServiceImpl implements RouletteService{
         return value.matches("-?(0|[1-9]\\d*)")? true : false;
     }
 
+    @Override
+    public void displayReport(List<PlayerReport> reports){
+
+        System.out.println("\n\nNumber : "+reports.get(0).getRouletteNum());
+        System.out.println("=======");
+        System.out.println(String.format("%-15s  %-10s %-10s %-10s ", "Player", "Bet", "Outcome", "Winnings"));
+        System.out.println("==================================================");
+        reports.stream().forEach(report -> System.out.printf(report.toString()));
+    }
+
 }
