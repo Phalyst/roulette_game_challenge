@@ -1,5 +1,6 @@
 package com.playsafe.roulette.service;
 
+import com.playsafe.roulette.dto.PlayerReport;
 import com.playsafe.roulette.model.Player;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @Service
@@ -36,4 +38,51 @@ public class RouletteServiceImpl implements RouletteService{
         }
         return players;
     }
+
+    @Override
+    public List<PlayerReport> calculateBet(List<Player> players){
+        int rouletteNum;
+        Random generator = new Random();
+        rouletteNum = generator.nextInt(37);
+
+        List<PlayerReport> reports = new ArrayList<>();
+        for (Player player : players){
+            PlayerReport report = new PlayerReport();
+            report.setBet(player.getBet());
+            report.setOutcome(LOSE);
+            report.setPlayerName(player.getName());
+            report.setRouletteNum(rouletteNum);
+            if(String.valueOf(rouletteNum).equals(player.getBet())){
+                report.setWinnings(player.getAmount()*36);
+                report.setOutcome(WIN);
+            }
+
+            if(isEvenNumber(rouletteNum)){
+                boolean isEven =  isNumber(player.getBet())? isEvenNumber(Integer.parseInt(player.getBet())):false;
+                if(EVEN_NUMBER.equals(player.getBet()) || isEven){
+                    report.setWinnings(player.getAmount()*2);
+                    report.setOutcome(WIN);
+                }
+            }else{
+                boolean isOdd  =  isNumber(player.getBet())? !isEvenNumber(Integer.parseInt(player.getBet())):false;
+                if(ODD_NUMBER.equals(player.getBet()) || isOdd ){
+                    report.setWinnings(player.getAmount()*2);
+                    report.setOutcome(WIN);
+                }
+            }
+
+            reports.add(report);
+        }
+        return reports;
+
+    }
+
+    public boolean isEvenNumber(int num){
+        return (num % 2 == 0)? true: false;
+    }
+
+    public boolean isNumber(String value){
+        return value.matches("-?(0|[1-9]\\d*)")? true : false;
+    }
+
 }
